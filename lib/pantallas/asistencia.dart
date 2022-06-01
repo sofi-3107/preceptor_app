@@ -1,0 +1,55 @@
+import 'package:flutter/material.dart';
+import 'package:preceptor_app/custom_widgets/custom_appbar.dart';
+import 'package:preceptor_app/custom_widgets/drawer_menu.dart';
+import 'package:preceptor_app/custom_widgets/lista_alumnos.dart';
+import 'package:preceptor_app/models/curso.dart';
+import 'package:preceptor_app/services/httpservice.dart';
+import 'package:preceptor_app/styles/estilos.dart';
+
+class Asistencia extends StatelessWidget {
+  Asistencia({Key? key, required this.curso}) : super(key: key);
+  final Curso curso;
+
+  HttpService ss = HttpService();
+  @override
+  Widget build(BuildContext context) {
+    //print('asistencia curso id: ${curso.id}');
+    return Scaffold(
+      appBar: CustomAppbar(
+          title:
+              '${curso.nivel!.nivel}º ${curso.division}º C${curso.nivel!.ciclo![0]} T${curso.turno![0]}'),
+      drawer: DrawerMenu(),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          ListaCurso(idCurso: curso.id!),
+          SizedBox(height: 20),
+          ElevatedButton(
+            style: buttonStyle,
+            child: Text('Ver Gráfico Materias'),
+            onPressed: () {
+              Navigator.pushNamed(context, '/materias');
+            },
+          ),
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              children: [
+                ElevatedButton(
+                    onPressed: () {},
+                    style: buttonStyle,
+                    child: Text('Modificar')),
+                Expanded(child: SizedBox()),
+                ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Guardar'),
+                  style: buttonStyle,
+                ),
+              ],
+            ),
+          )
+        ]),
+      ),
+    );
+  }
+}
