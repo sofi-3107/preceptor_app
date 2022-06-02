@@ -19,37 +19,38 @@ class Asistencia extends StatelessWidget {
           title:
               '${curso.nivel!.nivel}º ${curso.division}º C${curso.nivel!.ciclo![0]} T${curso.turno![0]}'),
       drawer: DrawerMenu(),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          ListaCurso(idCurso: curso.id!),
-          SizedBox(height: 20),
-          ElevatedButton(
-            style: buttonStyle,
-            child: Text('Ver Gráfico Materias'),
-            onPressed: () {
-              Navigator.pushNamed(context, '/materias');
-            },
-          ),
-          SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              children: [
-                ElevatedButton(
-                    onPressed: () {},
-                    style: buttonStyle,
-                    child: Text('Modificar')),
-                Expanded(child: SizedBox()),
-                ElevatedButton(
+      body: Column(children: [
+        SingleChildScrollView(
+            child: ConstrainedBox(
+                constraints: BoxConstraints(maxHeight: 450),
+                child: ListaCurso(idCurso: curso.id!))),
+        SizedBox(height: 20),
+        ElevatedButton(
+          style: buttonStyle,
+          child: Text('Ver Gráfico Materias'),
+          onPressed: () {
+            Navigator.pushNamed(context, '/materias');
+          },
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Row(
+            children: [
+              ElevatedButton(
                   onPressed: () {},
-                  child: Text('Guardar'),
                   style: buttonStyle,
-                ),
-              ],
-            ),
-          )
-        ]),
-      ),
+                  child: Text('Modificar')),
+              Expanded(child: SizedBox()),
+              ElevatedButton(
+                onPressed: () {},
+                child: Text('Guardar'),
+                style: buttonStyle,
+              ),
+            ],
+          ),
+        )
+      ]),
     );
   }
 }

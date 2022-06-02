@@ -67,11 +67,10 @@ class _GraficoMateriasState extends State<GraficoMaterias> {
       seriesList,
       animate: true,
       vertical: false,
-      barGroupingType: charts.BarGroupingType.stacked,
+      // barGroupingType: charts.BarGroupingType.stacked,
       behaviors: [
         charts.SeriesLegend(),
         charts.ChartTitle('Aprobados y Desaprobados por Materia'),
-        //charts.SeriesLegend(),
       ],
     );
   }
@@ -81,7 +80,7 @@ class _GraficoMateriasState extends State<GraficoMaterias> {
     return Scaffold(
         appBar: CustomAppbar(title: 'Grafico de Materias'),
         drawer: DrawerMenu(),
-        body: Container(padding: EdgeInsets.all(5), child: barChart()));
+        body: SafeArea(child: Card(child: barChart())));
   }
 }
 

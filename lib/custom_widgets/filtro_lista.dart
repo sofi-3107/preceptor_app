@@ -44,6 +44,14 @@ class ListaAlumnos extends StatelessWidget {
             '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}')
         .toList();
     List<String> cantidadFaltas = [
+      '0',
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
       '8',
       '9',
       '10',
@@ -56,7 +64,7 @@ class ListaAlumnos extends StatelessWidget {
     return Column(children: [
       FilterContainer(
           isListaCurso: true,
-          lista: cursosNombres,
+          lista: provider.cursosPreceptor,
           textlegend: 'Filtrar por Curso'),
       Divider(
         height: 1,
@@ -79,7 +87,7 @@ class FilterContainer extends StatefulWidget {
       required this.isListaCurso})
       : super(key: key);
   final bool isListaCurso;
-  final List<String> lista;
+  final List lista;
   final String? textlegend;
 
   @override
@@ -88,15 +96,16 @@ class FilterContainer extends StatefulWidget {
 
 class _FilterContainerState extends State<FilterContainer> {
   late String _currentValue;
-
+  late List<String> itemsList;
   @override
   void initState() {
     super.initState();
-    _currentValue = widget.lista[0];
+    _buildMenuItemsTexts();
   }
 
   @override
   Widget build(BuildContext context) {
+    itemsList.forEach((i) => print(i));
     return Container(
       margin: EdgeInsets.symmetric(vertical: 5),
       height: 40,
@@ -114,24 +123,30 @@ class _FilterContainerState extends State<FilterContainer> {
               child: Text(widget.textlegend.toString(),
                   style: TextStyle(color: Colors.white))),
           DropdownButton(
-            dropdownColor: Colors.green,
-            style: const TextStyle(color: Colors.white),
-            value: _currentValue,
-            onChanged: (String? value) {
-              setState(() {
-                _currentValue = value!;
-              });
-            },
-            items: widget.lista
-                .map<DropdownMenuItem<String>>((String e) => DropdownMenuItem(
-                    value: e,
-                    child: Text(
-                      e,
-                    )))
-                .toList(),
-          ),
+              dropdownColor: Colors.green,
+              style: const TextStyle(color: Colors.white),
+              value: _currentValue,
+              onChanged: (String? value) {
+                setState(() {
+                  _currentValue = value!;
+                });
+              },
+              items: itemsList
+                  .map<DropdownMenuItem<String>>(
+                      (m) => DropdownMenuItem(value: m, child: Text(m)))
+                  .toList()),
         ]),
       ),
     );
+  }
+
+  _buildMenuItemsTexts() {
+    widget.isListaCurso
+        ? itemsList = widget.lista
+            .map<String>((m) =>
+                '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}-id:${m.id}')
+            .toList()
+        : itemsList = widget.lista as List<String>;
+    _currentValue = widget.lista[0];
   }
 }

@@ -31,19 +31,22 @@ class _ListaCursoState extends State<ListaCurso> {
             .then((value) => alumnos = value),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return DataTable(
-              columns: [
-                DataColumn(label: Text('Alumno')),
-                DataColumn(label: Text('Presente')),
-                DataColumn(label: Text('Tardanza'))
-              ],
-              rows: alumnos
-                  .map<DataRow>((a) => DataRow(cells: [
-                        DataCell(Text('${a.apellido!}  ${a.nombre!}')),
-                        DataCell(CellCheckBox()),
-                        cellTextField
-                      ]))
-                  .toList(),
+            return Container(
+              height: 500,
+              child: DataTable(
+                columns: [
+                  DataColumn(label: Text('Alumno')),
+                  DataColumn(label: Text('Presente')),
+                  DataColumn(label: Text('Tardanza'))
+                ],
+                rows: alumnos
+                    .map<DataRow>((a) => DataRow(cells: [
+                          DataCell(Text('${a.apellido!}  ${a.nombre!}')),
+                          DataCell(CellCheckBox()),
+                          cellTextField
+                        ]))
+                    .toList(),
+              ),
             );
           } else if (snapshot.hasError) {
             return Center(
