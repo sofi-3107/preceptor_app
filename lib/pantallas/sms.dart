@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:preceptor_app/custom_widgets/custom_appbar.dart';
 import 'package:preceptor_app/custom_widgets/drawer_menu.dart';
-import 'package:preceptor_app/custom_widgets/filtro_lista.dart';
+import 'package:preceptor_app/custom_widgets/filtro_lista.dart,bkp';
 import 'package:preceptor_app/custom_widgets/message_box.dart';
 
 class SmsNotifier extends StatelessWidget {

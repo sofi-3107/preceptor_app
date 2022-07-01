@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:preceptor_app/pantallas/sms.dart';
 import 'package:preceptor_app/styles/estilos.dart';
 
 import 'drawer_lista_cursos.dart';
@@ -42,7 +43,8 @@ class DrawerMenu extends StatelessWidget {
           title: Text('Comunicados por SMS',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           onTap: () {
-            Navigator.pushNamed(context, '/sms');
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const SmsNotifier()));
           },
         ),
         Divider(

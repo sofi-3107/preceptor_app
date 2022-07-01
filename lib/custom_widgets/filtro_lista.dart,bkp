@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:preceptor_app/data4test/test_data.dart';
 import 'package:preceptor_app/models/curso.dart';
 import 'package:preceptor_app/providers/preceptor_provider.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +38,9 @@ class ListaAlumnos extends StatelessWidget {
       ),
       FilterContainer(
           isListaCurso: false, textlegend: 'Filtrar por Cantidad de Faltas'),
-      ListScroll(idCurso: provider.idCursos[provider.selectedCursoFilter]!),
+      ListScroll(
+          idCurso: provider.idCursos[provider.selectedCursoFilter] ??
+              0), // el provider.id Curso queda null
     ]);
   }
 }
@@ -123,14 +124,20 @@ class _FilterContainerState extends State<FilterContainer> {
                           .map<
                               DropdownMenuItem<
                                   String>>((Curso m) => DropdownMenuItem(
+                              onTap: () => print(
+                                  'idCurso seleccionados: ' + m.id.toString()),
+                              alignment: AlignmentDirectional.center,
                               value:
                                   '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}',
                               child: Text(
                                   '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}')))
                           .toList()
                       : cantidadFaltas
-                          .map<DropdownMenuItem<String>>(
-                              (e) => DropdownMenuItem(value: e, child: Text(e)))
+                          .map<DropdownMenuItem<String>>((e) =>
+                              DropdownMenuItem(
+                                  alignment: AlignmentDirectional.center,
+                                  value: e,
+                                  child: Text(e)))
                           .toList())
             ],
           ),
