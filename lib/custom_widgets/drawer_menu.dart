@@ -36,6 +36,7 @@ class DrawerMenu extends StatelessWidget {
         Container(
           child: DrawerListaCursos(),
         ),
+        Divider(thickness: 3),
         ListTile(
           leading: Icon(Icons.message),
           title: Text('Comunicados por SMS',

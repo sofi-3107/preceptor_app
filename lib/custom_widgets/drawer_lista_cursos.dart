@@ -22,24 +22,27 @@ class DrawerListaCursos extends StatelessWidget {
           if (snapshot.hasError) {
             return Center(child: Text(snapshot.error.toString()));
           } else if (snapshot.hasData) {
-            return ListView.builder(
+            return ListView.separated(
+                separatorBuilder: (BuildContext context, int i) {
+                  return Divider(
+                    thickness: 2,
+                  );
+                },
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 itemCount: cursos.length,
                 itemBuilder: (BuildContext context, int i) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(
-                          '${cursos[i].nivel!.nivel}º ${cursos[i].division}º C${cursos[i].nivel!.ciclo![0]} T${cursos[i].turno![0]}'),
-                      contentPadding: const EdgeInsets.only(left: 20.0),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    Asistencia(curso: cursos[i])));
-                      },
-                    ),
+                  return ListTile(
+                    title: Text(
+                        '${cursos[i].nivel!.nivel}º ${cursos[i].division}º C${cursos[i].nivel!.ciclo![0]} T${cursos[i].turno![0]}'),
+                    contentPadding: const EdgeInsets.only(left: 20.0),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  Asistencia(curso: cursos[i])));
+                    },
                   );
                 });
           } else {

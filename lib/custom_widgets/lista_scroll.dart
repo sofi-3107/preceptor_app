@@ -1,19 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:preceptor_app/custom_widgets/message_box.dart';
+import 'package:preceptor_app/models/alumno.dart';
+import 'package:preceptor_app/providers/preceptor_provider.dart';
+import 'package:provider/provider.dart';
 
 class ListScroll extends StatelessWidget {
-  const ListScroll({Key? key, required this.alumnos}) : super(key: key);
-
-  final alumnos;
+  ListScroll({Key? key, required this.idCurso}) : super(key: key);
+  final int idCurso;
+  List<Alumno> alumnos = [];
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 400),
-        child: CustomScrollView(slivers: [
-          SliverList(
-              delegate: SliverChildListDelegate([
-            for (var a in alumnos) ListTile(title: Text(a)),
-          ]))
-        ]));
+    final provider = Provider.of<PreceptorProvider>(context);
+    return FutureBuilder(
+      future: provider
+          .getAlumnosCursoOfProvider(idCurso)
+          .then((value) => alumnos = value),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return const Center(child: Text('Ha ocurrido un error'));
+        } else if (snapshot.hasData) {
+          return ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 400),
+              child: CustomScrollView(slivers: [
+                SliverList(
+                    delegate: SliverChildListDelegate([
+                  for (var a in alumnos)
+                    ListTile(
+                        title: Text(
+                            '${a.apellido!} ${a.nombre!}              ${a.tutor!.telefono}')),
+                ]))
+              ]));
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
+    );
   }
 }

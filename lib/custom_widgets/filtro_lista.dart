@@ -13,9 +13,6 @@ class FIltroLista extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var column = Column(
-      children: [Text('data'), Text('data'), Text('data')],
-    );
     return ListaAlumnos();
   }
 }
@@ -25,42 +22,12 @@ class ListaAlumnos extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  List students = [
-    'Juan Araujo',
-    'Eduardo Aramayo',
-    'Pablo Pelaya',
-    'Joaquin Estebanez',
-    'Juan Araujo',
-    'Eduardo Aramayo',
-    'Pablo Pelaya',
-    'Joaquin Estebanez'
-  ];
   List<Curso> cursos = [];
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PreceptorProvider>(context);
-    List<String> cursosNombres = provider.cursosPreceptor
-        .map<String>((Curso m) =>
-            '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}')
-        .toList();
-    List<String> cantidadFaltas = [
-      '0',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11',
-      '12',
-      '13',
-      '14',
-      '15'
-    ];
+    print(
+        'filtro_lista idcurso desde el map : ${provider.idCursos[provider.selectedCursoFilter]}');
     return Column(children: [
       FilterContainer(
           isListaCurso: true,
@@ -71,10 +38,8 @@ class ListaAlumnos extends StatelessWidget {
         thickness: 0.5,
       ),
       FilterContainer(
-          isListaCurso: false,
-          lista: cantidadFaltas,
-          textlegend: 'Filtrar por Cantidad de Faltas'),
-      ListScroll(alumnos: students),
+          isListaCurso: false, textlegend: 'Filtrar por Cantidad de Faltas'),
+      ListScroll(idCurso: provider.idCursos[provider.selectedCursoFilter]!),
     ]);
   }
 }
@@ -82,12 +47,12 @@ class ListaAlumnos extends StatelessWidget {
 class FilterContainer extends StatefulWidget {
   FilterContainer(
       {Key? key,
-      required this.lista,
+      this.lista,
       required this.textlegend,
       required this.isListaCurso})
       : super(key: key);
   final bool isListaCurso;
-  final List lista;
+  final List<Curso>? lista;
   final String? textlegend;
 
   @override
@@ -95,58 +60,91 @@ class FilterContainer extends StatefulWidget {
 }
 
 class _FilterContainerState extends State<FilterContainer> {
-  late String _currentValue;
-  late List<String> itemsList;
+  List<String> cantidadFaltas = [
+    '0',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    '11',
+    '12',
+    '13',
+    '14',
+    '15'
+  ];
+  late String _currentValue = cantidadFaltas[0];
+
   @override
   void initState() {
     super.initState();
-    _buildMenuItemsTexts();
+    _setInitialValue();
   }
 
   @override
   Widget build(BuildContext context) {
-    itemsList.forEach((i) => print(i));
+    final provider = Provider.of<PreceptorProvider>(context);
+
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 5),
-      height: 40,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [Colors.green, Colors.black87]),
-      ),
-      //color: Colors.green[100],
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 5),
-        child: Row(children: [
-          Expanded(
-              child: Text(widget.textlegend.toString(),
-                  style: TextStyle(color: Colors.white))),
-          DropdownButton(
-              dropdownColor: Colors.green,
-              style: const TextStyle(color: Colors.white),
-              value: _currentValue,
-              onChanged: (String? value) {
-                setState(() {
-                  _currentValue = value!;
-                });
-              },
-              items: itemsList
-                  .map<DropdownMenuItem<String>>(
-                      (m) => DropdownMenuItem(value: m, child: Text(m)))
-                  .toList()),
-        ]),
-      ),
-    );
+        margin: EdgeInsets.symmetric(vertical: 5),
+        height: 40,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [Colors.green, Colors.black87]),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            children: [
+              Expanded(
+                  child: Text(widget.textlegend.toString(),
+                      style: TextStyle(color: Colors.white))),
+              DropdownButton(
+                  dropdownColor: Colors.green,
+                  style: const TextStyle(color: Colors.white),
+                  value: _currentValue,
+                  onChanged: (String? value) {
+                    setState(() {
+                      _currentValue = value!;
+                      widget.isListaCurso
+                          ? provider.setFilterCurso(_currentValue)
+                          : provider.setFilterCantidadFaltas(_currentValue);
+                    });
+                  },
+                  items: widget.isListaCurso
+                      ? widget.lista!
+                          .map<
+                              DropdownMenuItem<
+                                  String>>((Curso m) => DropdownMenuItem(
+                              value:
+                                  '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}',
+                              child: Text(
+                                  '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}')))
+                          .toList()
+                      : cantidadFaltas
+                          .map<DropdownMenuItem<String>>(
+                              (e) => DropdownMenuItem(value: e, child: Text(e)))
+                          .toList())
+            ],
+          ),
+        ));
   }
 
-  _buildMenuItemsTexts() {
-    widget.isListaCurso
-        ? itemsList = widget.lista
-            .map<String>((m) =>
-                '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}-id:${m.id}')
-            .toList()
-        : itemsList = widget.lista as List<String>;
-    _currentValue = widget.lista[0];
+  _setInitialValue() {
+    if (widget.isListaCurso) {
+      _currentValue = widget.lista!
+          .map((m) =>
+              '${m.nivel!.nivel}º ${m.division}º C${m.nivel!.ciclo![0]} T${m.turno![0]}')
+          .toList()[0];
+    } else {
+      _currentValue = cantidadFaltas[0];
+    }
   }
 }
