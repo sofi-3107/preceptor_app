@@ -17,7 +17,7 @@ class PreceptorProvider extends ChangeNotifier {
   Future<List<Alumno>> getAlumnosCursoOfProvider(
     int curso,
   ) async {
-    service
+    await service
         .getAlumnosCurso(curso, currentyear)
         .then((value) => alumnosCurso = value);
 
@@ -25,10 +25,10 @@ class PreceptorProvider extends ChangeNotifier {
   }
 
   Future<List<Curso>> getCursosPreceptorOfProvider(int idPreceptor) async {
-    service
+    await service
         .getCursosPreceptor(idPreceptor)
         .then((value) => cursosPreceptor = value);
-    _fillMapWithIds();
+    // _fillMapWithIds();
     return cursosPreceptor;
   }
 
@@ -52,9 +52,9 @@ class PreceptorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  setFilterCurso(String curso) {
+  /*setFilterCurso(String curso) {
     selectedCursoFilter = curso;
 
     notifyListeners();
-  }
+  }*/
 }
