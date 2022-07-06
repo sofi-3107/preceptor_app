@@ -25,8 +25,6 @@ class ListaAlumnos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<PreceptorProvider>(context);
-    print(
-        'filtro_lista idcurso desde el map : ${provider.idCursos[provider.selectedCursoFilter]}');
     return Column(children: [
       FilterContainer(
           isListaCurso: true,
@@ -34,13 +32,11 @@ class ListaAlumnos extends StatelessWidget {
           textlegend: 'Filtrar por Curso'),
       Divider(
         height: 1,
-        thickness: 0.5,
+        thickness: 0.1,
       ),
       FilterContainer(
           isListaCurso: false, textlegend: 'Filtrar por Cantidad de Faltas'),
-      ListScroll(
-          idCurso: provider.idCursos[provider.selectedCursoFilter] ??
-              0), // el provider.id Curso queda null
+      ListScroll(provider.getIdCurso()), // el provider.id Curso queda null
     ]);
   }
 }
@@ -125,7 +121,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                 print("onTap");
                                 print(m.id ?? 0);
                                 widget.isListaCurso
-                                    ? provider.getAlumnosCursoOfProvider(m.id!)
+                                    ? provider.setIdCurso(m.id!)
                                     : provider
                                         .setFilterCantidadFaltas(_currentValue);
                               },

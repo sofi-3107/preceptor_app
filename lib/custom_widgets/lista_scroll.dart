@@ -5,8 +5,9 @@ import 'package:preceptor_app/providers/preceptor_provider.dart';
 import 'package:provider/provider.dart';
 
 class ListScroll extends StatelessWidget {
-  ListScroll({Key? key, required this.idCurso}) : super(key: key);
+  ListScroll(this.idCurso, {Key? key, this.cantidadFaltas}) : super(key: key);
   final int idCurso;
+  final int? cantidadFaltas;
   List<Alumno> alumnos = [];
   @override
   Widget build(BuildContext context) {
@@ -24,6 +25,7 @@ class ListScroll extends StatelessWidget {
               child: CustomScrollView(slivers: [
                 SliverList(
                     delegate: SliverChildListDelegate([
+                  //alumnos= alumnos.where();
                   for (var a in alumnos)
                     ListTile(
                         title: Text(

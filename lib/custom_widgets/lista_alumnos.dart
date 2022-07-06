@@ -17,7 +17,7 @@ class _ListaCursoState extends State<ListaCurso> {
 
   @override
   Widget build(BuildContext context) {
-    print('id del curso en lista alumnos: ${widget.idCurso}');
+    // print('id del curso en lista alumnos: ${widget.idCurso}');
     final providerAlumnos = Provider.of<PreceptorProvider>(context);
     var cellTextField = DataCell(TextField(
       decoration: InputDecoration(
