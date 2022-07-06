@@ -25,7 +25,6 @@ class ListScroll extends StatelessWidget {
               child: CustomScrollView(slivers: [
                 SliverList(
                     delegate: SliverChildListDelegate([
-                  //alumnos= alumnos.where();
                   for (var a in alumnos)
                     ListTile(
                         title: Text(
