@@ -18,7 +18,8 @@ class ListScroll extends StatelessWidget {
           .then((value) => alumnos = value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Center(child: Text('Ha ocurrido un error'));
+          print(' SNAPSHOT ERROR: ${snapshot.error}');
+          return const Center(child: Text('Ha ocurrido un error: '));
         } else if (snapshot.hasData) {
           return ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 400),
@@ -26,9 +27,13 @@ class ListScroll extends StatelessWidget {
                 SliverList(
                     delegate: SliverChildListDelegate([
                   for (var a in alumnos)
-                    ListTile(
-                        title: Text(
-                            '${a.apellido!} ${a.nombre!}              ${a.tutor!.telefono}')),
+                    if (a.asistencias!
+                            .where((a) => a.estado == 'ausente')
+                            .length >
+                        provider.getCantidadFaltas())
+                      ListTile(
+                          title: Text(
+                              '${a.apellido!} ${a.nombre!}        ${a.asistencias!.where((a) => a.estado == 'ausente').length}            ${a.tutor!.telefono}')),
                 ]))
               ]));
         } else {

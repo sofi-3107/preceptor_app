@@ -47,7 +47,7 @@ class _ListaCursoState extends State<ListaCurso> {
             );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text(" Ha ocurrido un error"),
+              child: Text(" Ha ocurrido un error:\n ${snapshot.error}"),
             );
           } else {
             return Center(child: CircularProgressIndicator());

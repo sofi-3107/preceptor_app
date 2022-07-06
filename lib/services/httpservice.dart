@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HttpService {
-  final rootUrl = 'http://192.168.100.4:3000/preceptor';
+  final rootUrl = 'http://192.168.0.179:3000/preceptor';
   final drawerCursosList = 'cursos';
   final alumnosCursoUrl = 'alumnos';
 
@@ -26,13 +26,17 @@ class HttpService {
 /**Obtiene la lista de alumnos de un curso en particular */
   Future<List<Alumno>> getAlumnosCurso(int curso, int cicloLectivo) async {
     List<Alumno> alumnosCurso = [];
-    final response = await http
-        .get(Uri.parse('$rootUrl/$alumnosCursoUrl/$curso/$cicloLectivo'));
-    if (response.statusCode == 200) {
-      final decodedResponse = await json.decode(response.body);
-      for (var i = 0; i < decodedResponse.length; i++) {
-        alumnosCurso.add(Alumno.fromJson(decodedResponse[i]));
+    try {
+      final response = await http
+          .get(Uri.parse('$rootUrl/$alumnosCursoUrl/$curso/$cicloLectivo'));
+      if (response.statusCode == 200) {
+        final decodedResponse = await json.decode(response.body);
+        for (var i = 0; i < decodedResponse.length; i++) {
+          alumnosCurso.add(Alumno.fromJson(decodedResponse[i]));
+        }
       }
+    } on Exception catch (e) {
+      print('Exception in getAlumnosCursos Http $e');
     }
     return alumnosCurso;
   }

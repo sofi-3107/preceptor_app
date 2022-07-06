@@ -12,7 +12,7 @@ class Asistencia {
   final int? tardanza;
   final int? cicloLectivo;
   final String? estado;
-  final Alumno? alumno;
+  final int? alumno;
 
   factory Asistencia.fromRawJson(String str) =>
       Asistencia.fromJson(json.decode(str));
@@ -24,17 +24,13 @@ class Asistencia {
       cicloLectivo: json["cicloLectivo"] ?? 0,
       fecha: json["fecha"] ?? '',
       tardanza: json["tardanza"] ?? 0,
-      alumno: Alumno.fromJson(json["alumno"] ??
-          Alumno(
-              apellido: '',
-              nombre: '',
-              tutor: Tutor(apellido: '', nombre: '', telefono: ''))));
+      alumno: json["alumno"] ?? 0);
 
   Map<String, dynamic> toJson() => {
         "fecha": fecha,
         "tardanza": tardanza,
         "cicloLectivo": cicloLectivo,
-        "alumno": alumno!.toJson(),
+        "alumno": alumno,
         "estado": estado
       };
 }

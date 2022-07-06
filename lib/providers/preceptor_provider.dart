@@ -11,11 +11,19 @@ class PreceptorProvider extends ChangeNotifier {
   String selectedCantFaltasFilter = '';
   String selectedCursoFilter = '';
   int idCurso = 0;
+  int cantidadFaltas = 0;
 
 //Getter y Setter para compartir el id del curso entre componentes
   getIdCurso() => idCurso;
   setIdCurso(id) {
     idCurso = id;
+    notifyListeners();
+  }
+
+  getCantidadFaltas() => cantidadFaltas;
+
+  setCantidadFaltas(cant) {
+    cantidadFaltas = cant;
     notifyListeners();
   }
 
