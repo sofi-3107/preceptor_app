@@ -118,10 +118,7 @@ class _FilterContainerState extends State<FilterContainer> {
                               DropdownMenuItem<
                                   String>>((Curso m) => DropdownMenuItem(
                               onTap: () {
-                                widget.isListaCurso
-                                    ? provider.setIdCurso(m.id!)
-                                    : provider.setCantidadFaltas(
-                                        int.parse(_currentValue));
+                                provider.setIdCurso(m.id!);
                               },
                               alignment: AlignmentDirectional.center,
                               value:
@@ -132,6 +129,8 @@ class _FilterContainerState extends State<FilterContainer> {
                       : cantidadFaltas
                           .map<DropdownMenuItem<String>>((e) =>
                               DropdownMenuItem(
+                                  onTap: () =>
+                                      provider.setCantidadFaltas(int.parse(e)),
                                   alignment: AlignmentDirectional.center,
                                   value: e,
                                   child: Text(e)))

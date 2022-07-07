@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class HttpService {
-  final rootUrl = 'http://192.168.0.179:3000/preceptor';
+  final rootUrl = 'http://192.168.100.4:3000/preceptor';
   final drawerCursosList = 'cursos';
   final alumnosCursoUrl = 'alumnos';
 

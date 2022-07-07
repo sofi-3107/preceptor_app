@@ -29,7 +29,7 @@ class ListScroll extends StatelessWidget {
                   for (var a in alumnos)
                     if (a.asistencias!
                             .where((a) => a.estado == 'ausente')
-                            .length >
+                            .length >=
                         provider.getCantidadFaltas())
                       ListTile(
                           title: Text(
