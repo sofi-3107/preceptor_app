@@ -4,6 +4,7 @@ import 'package:preceptor_app/models/alumno.dart';
 import 'package:preceptor_app/providers/preceptor_provider.dart';
 import 'package:preceptor_app/sharing.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListScroll extends StatelessWidget {
   ListScroll(this.idCurso, {Key? key, this.cantidadFaltas}) : super(key: key);
@@ -23,7 +24,9 @@ class ListScroll extends StatelessWidget {
           return const Center(child: Text('Ha ocurrido un error: '));
         } else if (snapshot.hasData) {
           return ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: 400),
+              constraints: const BoxConstraints(
+                maxHeight: 400,
+              ),
               child: CustomScrollView(slivers: [
                 SliverList(
                     delegate: SliverChildListDelegate([
@@ -33,10 +36,18 @@ class ListScroll extends StatelessWidget {
                             .length >=
                         provider.getCantidadFaltas())
                       ListTile(
-                          onTap: () => enviarSMS(
-                              provider.getMessageSMS(), [a.tutor!.telefono!]),
-                          title: Text(
-                              '${a.apellido!} ${a.nombre!}        ${a.asistencias!.where((a) => a.estado == 'ausente').length}            ${a.tutor!.telefono}')),
+                        leading: Icon(Icons.contact_phone_sharp,
+                            color: Colors.blue.shade900),
+                        onTap: () => enviarSMS(
+                            provider.getMessageSMS(), [a.tutor!.telefono!]),
+                        title: Text(
+                            '${a.apellido!} ${a.nombre!}   Faltas: ${a.asistencias!.where((a) => a.estado == 'ausente').length}   Tutor: ${a.tutor!.telefono}'),
+                        trailing: IconButton(
+                            onPressed: () async =>
+                                await launch('tel:${a.tutor!.telefono!}'),
+                            icon: Icon(Icons.phone,
+                                color: Colors.green.shade800)),
+                      ),
                 ]))
               ]));
         } else {
