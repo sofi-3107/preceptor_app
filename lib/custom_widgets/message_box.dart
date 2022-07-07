@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:preceptor_app/providers/preceptor_provider.dart';
 import 'package:preceptor_app/styles/estilos.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'package:provider/provider.dart';
 
 import '../sharing.dart';
 
@@ -35,6 +37,7 @@ class _MessageBoxState extends State<MessageBox> {
   var phone;
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PreceptorProvider>(context);
     return Container(
       decoration: greenGradientBox,
       padding: EdgeInsets.symmetric(horizontal: 20),
@@ -73,7 +76,8 @@ class _MessageBoxState extends State<MessageBox> {
                           )),
                       TextButton(
                         onPressed: () {
-                          Navigator.pop(context, 'Cancel');
+                          /* Navigator.pop(context, 'Cancel');*/
+                          provider.getTelefonosTutores().forEach(print);
                           _msgController.clear();
                           _phoneController.clear();
                         },
@@ -92,7 +96,7 @@ class _MessageBoxState extends State<MessageBox> {
                     ],
                   ),
                 ),
-            child: Text('Enviar SMS'),
+            child: Icon(Icons.message_outlined),
             style: buttonStyle)
       ]),
     );

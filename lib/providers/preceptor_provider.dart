@@ -12,6 +12,7 @@ class PreceptorProvider extends ChangeNotifier {
   String selectedCursoFilter = '';
   int idCurso = 0;
   int cantidadFaltas = 0;
+  List<String> telTutores = [];
 
 //Getter y Setter para compartir el id del curso entre componentes
   getIdCurso() => idCurso;
@@ -27,11 +28,14 @@ class PreceptorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getTelTutores() => telTutores;
+
   /**Retorna la lista de alumnos de un curso en particular */
 
   Future<List<Alumno>> getAlumnosCursoOfProvider(
     int curso,
   ) async {
+    alumnosCurso.clear();
     await service
         .getAlumnosCurso(curso, currentyear)
         .then((value) => alumnosCurso = value);
@@ -50,5 +54,16 @@ class PreceptorProvider extends ChangeNotifier {
     selectedCantFaltasFilter = faltas;
 
     notifyListeners();
+  }
+
+  getTelefonosTutores() {
+    telTutores.clear();
+    for (var a in alumnosCurso) {
+      if (a.asistencias!.where((a) => a.estado == 'ausente').length >=
+          getCantidadFaltas()) {
+        telTutores.add(a.tutor!.telefono!);
+      }
+    }
+    return telTutores;
   }
 }
