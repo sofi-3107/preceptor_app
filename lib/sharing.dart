@@ -10,6 +10,12 @@ void enviarSMS(String message, List<String> recipents) async {
   print(_result);
 }
 
+void enviarWhatsap(String msg, List<String> recipents) async {
+  String numbers = recipents.join(',');
+  String url = 'https://wa.me/$numbers?text=$msg';
+  await launch(url).then((value) => print(value));
+}
+
 launchMailto(destinatario, asunto, mensaje) async {
   final mailtoLink = Mailto(
     to: [destinatario],

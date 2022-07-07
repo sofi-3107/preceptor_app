@@ -69,7 +69,7 @@ class PreceptorProvider extends ChangeNotifier {
     for (var a in alumnosCurso) {
       if (a.asistencias!.where((a) => a.estado == 'ausente').length >=
           getCantidadFaltas()) {
-        telTutores.add(a.tutor!.telefono!);
+        telTutores.add('+54${a.tutor!.telefono!}');
       }
     }
     return telTutores;

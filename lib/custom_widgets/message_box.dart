@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:preceptor_app/providers/preceptor_provider.dart';
 import 'package:preceptor_app/styles/estilos.dart';
-import 'package:flutter_sms/flutter_sms.dart';
 import 'package:provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../sharing.dart';
 
@@ -75,38 +75,5 @@ class _MessageBoxState extends State<MessageBox> {
             }),
       ]),
     );
-  }
-
-  abrirDIalogo(BuildContext context) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(
-                  'Escriba su numero de celular con formato:+5493876144617'),
-              content: Text(_msgController.text),
-              actions: [
-                Container(
-                    padding: EdgeInsets.all(30),
-                    child: TextField(
-                      keyboardType: TextInputType.phone,
-                      controller: _phoneController,
-                      decoration: InputDecoration(
-                          hintText: 'Escriba su número de celular'),
-                    )),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context, 'Cancel');
-
-                    _msgController.clear();
-                    _phoneController.clear();
-                  },
-                  child: const Text('Cancelar'),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text('Enviar'),
-                ),
-              ],
-            ));
   }
 }
