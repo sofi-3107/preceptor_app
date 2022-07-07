@@ -49,6 +49,7 @@ class _MessageBoxState extends State<MessageBox> {
         ),
         SizedBox(height: 15),
         TextField(
+            onChanged: provider.setMessageSMS(_msgController.text),
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
             maxLines: 3,
@@ -59,46 +60,53 @@ class _MessageBoxState extends State<MessageBox> {
                 labelStyle: TextStyle(color: Colors.amber),
                 labelText: 'Escriba un mensaje corto')),
         ElevatedButton(
-            onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: Text(
-                        'Escriba su numero de celular con formato:+5493876144617'),
-                    content: Text(_msgController.text),
-                    actions: [
-                      Container(
-                          padding: EdgeInsets.all(30),
-                          child: TextField(
-                            keyboardType: TextInputType.phone,
-                            controller: _phoneController,
-                            decoration: InputDecoration(
-                                hintText: 'Escriba su número de celular'),
-                          )),
-                      TextButton(
-                        onPressed: () {
-                          /* Navigator.pop(context, 'Cancel');*/
-                          provider.getTelefonosTutores().forEach(print);
-                          _msgController.clear();
-                          _phoneController.clear();
-                        },
-                        child: const Text('Cancelar'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          enviarSMS(
-                              _msgController.text, [_phoneController.text]);
-                          _msgController.clear();
-                          _phoneController.clear();
-                          Navigator.pop(context, 'Enviar');
-                        },
-                        child: const Text('Enviar'),
-                      ),
-                    ],
-                  ),
-                ),
-            child: Icon(Icons.message_outlined),
-            style: buttonStyle)
+            child: Icon(Icons.message_outlined, color: Colors.white),
+            style: ElevatedButton.styleFrom(
+                shape: CircleBorder(
+                    side: BorderSide(width: 1, color: Colors.white)),
+                padding: EdgeInsets.all(10),
+                primary: Colors.green.shade700),
+            onPressed: () {
+              enviarSMS(_msgController.text, provider.getTelefonosTutores());
+              provider.getTelefonosTutores().forEach(print);
+              _msgController.clear();
+              _phoneController.clear();
+              Navigator.pop(context, 'Enviar');
+            }),
       ]),
     );
+  }
+
+  abrirDIalogo(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: Text(
+                  'Escriba su numero de celular con formato:+5493876144617'),
+              content: Text(_msgController.text),
+              actions: [
+                Container(
+                    padding: EdgeInsets.all(30),
+                    child: TextField(
+                      keyboardType: TextInputType.phone,
+                      controller: _phoneController,
+                      decoration: InputDecoration(
+                          hintText: 'Escriba su número de celular'),
+                    )),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, 'Cancel');
+
+                    _msgController.clear();
+                    _phoneController.clear();
+                  },
+                  child: const Text('Cancelar'),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text('Enviar'),
+                ),
+              ],
+            ));
   }
 }

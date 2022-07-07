@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:preceptor_app/custom_widgets/message_box.dart';
 import 'package:preceptor_app/models/alumno.dart';
 import 'package:preceptor_app/providers/preceptor_provider.dart';
+import 'package:preceptor_app/sharing.dart';
 import 'package:provider/provider.dart';
 
 class ListScroll extends StatelessWidget {
@@ -32,6 +33,8 @@ class ListScroll extends StatelessWidget {
                             .length >=
                         provider.getCantidadFaltas())
                       ListTile(
+                          onTap: () => enviarSMS(
+                              provider.getMessageSMS(), [a.tutor!.telefono!]),
                           title: Text(
                               '${a.apellido!} ${a.nombre!}        ${a.asistencias!.where((a) => a.estado == 'ausente').length}            ${a.tutor!.telefono}')),
                 ]))
@@ -42,5 +45,4 @@ class ListScroll extends StatelessWidget {
       },
     );
   }
-
 }

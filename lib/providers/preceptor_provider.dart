@@ -13,11 +13,19 @@ class PreceptorProvider extends ChangeNotifier {
   int idCurso = 0;
   int cantidadFaltas = 0;
   List<String> telTutores = [];
+  String messageSMS = '';
 
 //Getter y Setter para compartir el id del curso entre componentes
   getIdCurso() => idCurso;
   setIdCurso(id) {
     idCurso = id;
+    notifyListeners();
+  }
+
+  getMessageSMS() => messageSMS;
+  setMessageSMS(msg) {
+    messageSMS = msg;
+    print(messageSMS);
     notifyListeners();
   }
 
