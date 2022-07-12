@@ -25,6 +25,11 @@ class _GraficoMateriasState extends State<GraficoMaterias> {
       animate: true,
       vertical: false,
       barGroupingType: charts.BarGroupingType.stacked,
+      barRendererDecorator: charts.BarLabelDecorator(
+          outsideLabelStyleSpec: charts.TextStyleSpec(fontSize: 15),
+          labelAnchor: charts.BarLabelAnchor.middle,
+          insideLabelStyleSpec: charts.TextStyleSpec(
+              fontSize: 20, color: charts.MaterialPalette.white)),
       behaviors: [
         charts.SeriesLegend(),
         charts.ChartTitle('Aprobados y Desaprobados por Materia'),

@@ -35,13 +35,15 @@ class GraficoProvider extends ChangeNotifier {
           labelAccessorFn: (CondicionMateria cdnMateria, _) =>
               cdnMateria.aprobados.toString()),
       charts.Series<CondicionMateria, String>(
-        id: 'Desaprobados',
-        colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
-        domainFn: (CondicionMateria cdnMateria, _) => cdnMateria.nombreMateria,
-        measureFn: (CondicionMateria cdnMateria, _) =>
-            cdnMateria.desaprobados ?? 0,
-        data: desaprobados,
-      )
+          id: 'Desaprobados',
+          colorFn: (_, __) => charts.MaterialPalette.purple.shadeDefault,
+          domainFn: (CondicionMateria cdnMateria, _) =>
+              cdnMateria.nombreMateria,
+          measureFn: (CondicionMateria cdnMateria, _) =>
+              cdnMateria.desaprobados ?? 0,
+          data: desaprobados,
+          labelAccessorFn: (CondicionMateria cdnMateria, _) =>
+              cdnMateria.desaprobados.toString()),
     ];
   }
 }
