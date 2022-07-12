@@ -1,12 +1,16 @@
 import 'package:preceptor_app/models/alumno.dart';
+import 'package:preceptor_app/models/condicion_materia.dart';
 import 'package:preceptor_app/models/curso.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:preceptor_app/models/nota.dart';
 
 class HttpService {
   final rootUrl = 'http://192.168.100.4:3000/preceptor';
   final drawerCursosList = 'cursos';
   final alumnosCursoUrl = 'alumnos';
+  final notasGrafico = 'notas';
 
   /**Obtiene la lista de cursos de un preceptor en particular */
 
@@ -39,5 +43,37 @@ class HttpService {
       print('Exception in getAlumnosCursos Http $e');
     }
     return alumnosCurso;
+  }
+
+/**Obtiene la cantidad de alumnos aprobados*/
+  Future<List<CondicionMateria>> getCantCondicionPorMateria(
+      int curso, int cicloLectivo, int trimestre, condicion) async {
+    List<CondicionMateria> condicionMaterias = [];
+    try {
+      // print('$rootUrl/$notasGrafico/$curso/$cicloLectivo/$trimestre/$condicion');
+      final response = await http.get(Uri.parse(
+          '$rootUrl/$notasGrafico/$curso/$cicloLectivo/$trimestre/$condicion'));
+      if (response.statusCode == 200) {
+        final decodedResponse = await json.decode(response.body);
+        print('condicion Grafico service:$condicion: $decodedResponse');
+        for (var i = 0; i < decodedResponse.length; i++) {
+          if (condicion == 'desaprobado') {
+            condicionMaterias.add(CondicionMateria(
+                nombreMateria: decodedResponse[i]["materia"],
+                desaprobados: int.parse(decodedResponse[i]["desaprobados"])));
+          } else {
+            condicionMaterias.add(CondicionMateria(
+                nombreMateria: decodedResponse[i]["materia"],
+                aprobados: int.parse(decodedResponse[i]["aprobados"])));
+          }
+        }
+      }
+
+      return condicionMaterias;
+    } catch (e) {
+      print(
+          'Error capturado en el service: $condicion:  $e  tamaño de lista retornada: ${condicionMaterias.length}');
+      return condicionMaterias;
+    }
   }
 }

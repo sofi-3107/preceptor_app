@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:preceptor_app/models/alumno.dart';
+import 'package:preceptor_app/models/condicion_materia.dart';
 import 'package:preceptor_app/models/curso.dart';
+import 'package:preceptor_app/models/nota.dart';
 import 'package:preceptor_app/services/httpservice.dart';
 
 class PreceptorProvider extends ChangeNotifier {
@@ -14,6 +16,8 @@ class PreceptorProvider extends ChangeNotifier {
   int cantidadFaltas = 0;
   List<String> telTutores = [];
   String messageSMS = '';
+  List<CondicionMateria> aprobadosDesaprobados = [];
+  //List<CondicionMateria> desaprobados = [];
 
 //Getter y Setter para compartir el id del curso entre componentes
   getIdCurso() => idCurso;
@@ -73,5 +77,15 @@ class PreceptorProvider extends ChangeNotifier {
       }
     }
     return telTutores;
+  }
+
+  getDatosGraficos(int curso, int trimestre, String condicion) async {
+    await service
+        .getCantCondicionPorMateria(curso, currentyear, trimestre, condicion)
+        .then((data) => aprobadosDesaprobados = data);
+  }
+
+  getDatosGrafico() {
+    return aprobadosDesaprobados;
   }
 }

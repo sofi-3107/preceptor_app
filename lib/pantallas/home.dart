@@ -12,7 +12,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppbar(title: 'Docente App'),
+      appBar: CustomAppbar(title: 'Preceptor App'),
       drawer: DrawerMenu(),
       body: AnimatedLogo(titulo: titulo),
     );
