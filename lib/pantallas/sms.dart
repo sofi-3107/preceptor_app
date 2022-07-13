@@ -5,8 +5,6 @@ import 'package:preceptor_app/custom_widgets/filtro_lista.dart';
 import 'package:preceptor_app/custom_widgets/message_box.dart';
 
 class SmsNotifier extends StatelessWidget {
-  const SmsNotifier({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(

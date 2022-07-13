@@ -44,7 +44,7 @@ class DrawerMenu extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const SmsNotifier()));
+                MaterialPageRoute(builder: (context) => SmsNotifier()));
           },
         ),
         Divider(

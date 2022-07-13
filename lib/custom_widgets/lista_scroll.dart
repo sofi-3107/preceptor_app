@@ -7,8 +7,9 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ListScroll extends StatelessWidget {
-  ListScroll(this.idCurso, {Key? key, this.cantidadFaltas}) : super(key: key);
-  final int idCurso;
+  ListScroll(/*this.idCurso,*/ {Key? key, this.cantidadFaltas})
+      : super(key: key);
+  /*final int? idCurso;*/
   final int? cantidadFaltas;
   List<Alumno> alumnos = [];
   @override
@@ -16,7 +17,7 @@ class ListScroll extends StatelessWidget {
     final provider = Provider.of<PreceptorProvider>(context);
     return FutureBuilder(
       future: provider
-          .getAlumnosCursoOfProvider(idCurso)
+          .getAlumnosCursoOfProvider(provider.getIdCurso()!)
           .then((value) => alumnos = value),
       builder: (context, snapshot) {
         if (snapshot.hasError) {

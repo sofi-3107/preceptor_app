@@ -3,17 +3,25 @@ import 'package:preceptor_app/custom_widgets/custom_appbar.dart';
 import 'package:preceptor_app/custom_widgets/drawer_menu.dart';
 import 'package:preceptor_app/custom_widgets/lista_alumnos.dart';
 import 'package:preceptor_app/models/curso.dart';
+import 'package:preceptor_app/providers/preceptor_provider.dart';
 import 'package:preceptor_app/services/httpservice.dart';
 import 'package:preceptor_app/styles/estilos.dart';
+import 'package:provider/provider.dart';
 
 class Asistencia extends StatelessWidget {
-  Asistencia({Key? key, required this.curso}) : super(key: key);
-  final Curso curso;
+  /* Asistencia({
+    Key? key,
+    required this.curso
+  }) : super(key: key);*/
+  //final Curso curso;
 
   HttpService ss = HttpService();
   @override
   Widget build(BuildContext context) {
-    //print('asistencia curso id: ${curso.id}');
+    final provider = Provider.of<PreceptorProvider>(context);
+    Curso curso = provider.getSelectedCurso();
+    Orientation orientation = MediaQuery.of(context).orientation;
+
     return Scaffold(
       appBar: CustomAppbar(
           title:

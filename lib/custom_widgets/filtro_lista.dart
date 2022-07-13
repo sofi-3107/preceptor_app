@@ -36,7 +36,7 @@ class ListaAlumnos extends StatelessWidget {
       ),
       FilterContainer(
           isListaCurso: false, textlegend: 'Filtrar por Cantidad de Faltas'),
-      ListScroll(provider.getIdCurso()), // el provider.id Curso queda null
+      ListScroll(), // el provider.id Curso queda null
     ]);
   }
 }

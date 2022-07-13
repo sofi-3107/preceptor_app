@@ -22,7 +22,7 @@ void main() {
             '/': (context) => Home(
                   titulo: 'Preceptor App',
                 ),
-            '/sms': (context) => const SmsNotifier(),
+            '/sms': (context) => SmsNotifier(),
             '/materias': (context) => GraficoMaterias(),
           },
           debugShowCheckedModeBanner: false),

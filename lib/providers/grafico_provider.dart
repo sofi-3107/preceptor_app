@@ -4,20 +4,36 @@ import 'package:preceptor_app/services/httpservice.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class GraficoProvider extends ChangeNotifier {
-  Future<List<charts.Series<CondicionMateria, String>>>
-      crearDatosGrafico() async {
+  int selectedTrimestre = 1;
+  setSelectedTrimestre(int trimestre) {
+    print('new val: $trimestre');
+    selectedTrimestre = 1;
+    selectedTrimestre = trimestre;
+    print('ultimoval: $selectedTrimestre');
+    notifyListeners();
+  }
+
+  Future<List<charts.Series<CondicionMateria, String>>> crearDatosGrafico(
+      int curso) async {
     List<CondicionMateria> aprobados = [];
     List<CondicionMateria> desaprobados = [];
     HttpService service = HttpService();
+    final currentyear = DateTime.now().year;
 
+    getSelectedTrimestre() => selectedTrimestre;
+
+    print(
+        'Curso que ingresa al providerGrafico: $curso, $currentyear,$selectedTrimestre');
     await service
-        .getCantCondicionPorMateria(5, 2022, 1, 'aprobado')
+        .getCantCondicionPorMateria(
+            curso, currentyear, selectedTrimestre, 'aprobado')
         .then((data) {
       aprobados = data;
       print(' GraficoMateriasProvider Data: $data');
     });
     await service
-        .getCantCondicionPorMateria(5, 2022, 1, 'desaprobado')
+        .getCantCondicionPorMateria(
+            curso, currentyear, selectedTrimestre, 'desaprobado')
         .then((data) {
       print(' GraficoMateriasProvider Data Desparobados: ${data.length}');
       desaprobados = data;

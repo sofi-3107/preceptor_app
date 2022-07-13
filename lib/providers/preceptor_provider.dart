@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:preceptor_app/models/alumno.dart';
+import 'package:preceptor_app/models/asistencia.dart';
 import 'package:preceptor_app/models/condicion_materia.dart';
 import 'package:preceptor_app/models/curso.dart';
-import 'package:preceptor_app/models/nota.dart';
 import 'package:preceptor_app/services/httpservice.dart';
 
 class PreceptorProvider extends ChangeNotifier {
@@ -12,16 +12,25 @@ class PreceptorProvider extends ChangeNotifier {
   final currentyear = DateTime.now().year;
   String selectedCantFaltasFilter = '';
   String selectedCursoFilter = '';
-  int idCurso = 0;
+  Curso? selectedCurso;
   int cantidadFaltas = 0;
+  int idCurso = 5;
   List<String> telTutores = [];
   String messageSMS = '';
+  List<Asistencia> asistencias = [];
   List<CondicionMateria> aprobadosDesaprobados = [];
-  //List<CondicionMateria> desaprobados = [];
 
 //Getter y Setter para compartir el id del curso entre componentes
+  getSelectedCurso() => selectedCurso;
+  setSelectedCurso(Curso curso) {
+    selectedCurso = curso;
+    notifyListeners();
+  }
+
+  //El id del curso para el filtro_lista
   getIdCurso() => idCurso;
-  setIdCurso(id) {
+  setIdCurso(int id) {
+    idCurso = 5;
     idCurso = id;
     notifyListeners();
   }
@@ -29,7 +38,7 @@ class PreceptorProvider extends ChangeNotifier {
   getMessageSMS() => messageSMS;
   setMessageSMS(msg) {
     messageSMS = msg;
-    print(messageSMS);
+    //print(messageSMS);
     notifyListeners();
   }
 
@@ -87,5 +96,15 @@ class PreceptorProvider extends ChangeNotifier {
 
   getDatosGrafico() {
     return aprobadosDesaprobados;
+  }
+
+  addAsistenciaFromAlumno(String condicion, int idAlumno, int? mins) {
+    asistencias.clear();
+    asistencias.add(Asistencia(
+        cicloLectivo: currentyear,
+        estado: condicion,
+        fecha: DateTime.now().toString(),
+        alumno: idAlumno,
+        tardanza: mins));
   }
 }

@@ -37,11 +37,11 @@ class DrawerListaCursos extends StatelessWidget {
                         '${cursos[i].nivel!.nivel}º ${cursos[i].division}º C${cursos[i].nivel!.ciclo![0]} T${cursos[i].turno![0]}'),
                     contentPadding: const EdgeInsets.only(left: 20.0),
                     onTap: () {
+                      provider.setSelectedCurso(cursos[i]);
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  Asistencia(curso: cursos[i])));
+                              builder: (context) => Asistencia()));
                     },
                   );
                 });
