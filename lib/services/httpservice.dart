@@ -1,4 +1,5 @@
 import 'package:preceptor_app/models/alumno.dart';
+import 'package:preceptor_app/models/asistencia.dart';
 import 'package:preceptor_app/models/condicion_materia.dart';
 import 'package:preceptor_app/models/curso.dart';
 import 'package:http/http.dart' as http;
@@ -11,6 +12,7 @@ class HttpService {
   final drawerCursosList = 'cursos';
   final alumnosCursoUrl = 'alumnos';
   final notasGrafico = 'notas';
+  final asistenciaUrl = 'toma-asistencia';
 
   /**Obtiene la lista de cursos de un preceptor en particular */
 
@@ -74,6 +76,21 @@ class HttpService {
       print(
           'Error capturado en el service: $condicion:  $e  tamaño de lista retornada: ${condicionMaterias.length}');
       return condicionMaterias;
+    }
+  }
+
+  guardarAsistencia(Asistencia asistencia) async {
+    print('URL asistencia: $rootUrl/$asistenciaUrl');
+    try {
+      final response = await http.post(Uri.parse('$rootUrl/$asistenciaUrl'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: json.encode(asistencia.toJson()));
+      print('Asistencia: ${response.body} guardada');
+      return response.body.toString();
+    } catch (e) {
+      print('Error en el servicio metodo GuardarAsistencia: $e');
     }
   }
 }

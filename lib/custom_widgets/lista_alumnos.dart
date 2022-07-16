@@ -57,8 +57,6 @@ class _ListaCursoState extends State<ListaCurso> {
 }
 
 class CellCheckBox extends StatefulWidget {
-  const CellCheckBox({Key? key}) : super(key: key);
-
   @override
   _CellCheckBoxState createState() => _CellCheckBoxState();
 }

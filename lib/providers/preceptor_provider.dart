@@ -107,4 +107,10 @@ class PreceptorProvider extends ChangeNotifier {
         alumno: idAlumno,
         tardanza: mins));
   }
+
+  guardarAsistencias(List<Asistencia> asistencias) async {
+    for (var a in asistencias) {
+      await service.guardarAsistencia(a);
+    }
+  }
 }
