@@ -46,6 +46,7 @@ class Asistencia extends StatelessWidget {
               Expanded(child: SizedBox()),
               ElevatedButton(
                 onPressed: () {
+                  print('Asistencias lista: ${provider.asistencias}');
                   provider.guardarAsistencias();
                 },
                 child: Text('Guardar'),
