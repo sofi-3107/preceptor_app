@@ -26,19 +26,18 @@ class _ListaCursoState extends State<ListaCurso> {
             .then((value) => alumnos = value),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return DataTable(
-              columns: [
-                DataColumn(label: Text('Alumno')),
-                DataColumn(label: Text('Presente')),
-                DataColumn(label: Text('Tardanza'))
-              ],
-              rows: alumnos
-                  .map<DataRow>((Alumno a) => DataRow(cells: [
-                        DataCell(Text('${a.apellido!}  ${a.nombre!}')),
-                        DataCell(CellCheckBox(idAlumno: a.id!)),
-                        DataCell(MinsTextField())
-                      ]))
-                  .toList(),
+            return Expanded(
+              child: ListView.separated(
+                  itemBuilder: (context, i) {
+                    return ListTile(
+                        title:
+                            Text('${alumnos[i].apellido} ${alumnos[i].nombre}'),
+                        trailing: DropDownPresente());
+                  },
+                  separatorBuilder: (context, i) => Divider(
+                        thickness: 2,
+                      ),
+                  itemCount: alumnos.length),
             );
           } else if (snapshot.hasError) {
             return Center(
@@ -51,54 +50,31 @@ class _ListaCursoState extends State<ListaCurso> {
   }
 }
 
-class MinsTextField extends StatefulWidget {
-  MinsTextField(bool isEnabled);
-
+class DropDownPresente extends StatefulWidget {
   @override
-  State<MinsTextField> createState() => _MinsTextFieldState();
+  State<DropDownPresente> createState() => _DropDownPresenteState();
 }
 
-class _MinsTextFieldState extends State<MinsTextField> {
+class _DropDownPresenteState extends State<DropDownPresente> {
+  List estados = ['A', 'P', 'T'];
+  String _listValue = 'A';
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      enabled: widget.isEnabled,
-      decoration: InputDecoration(
-          labelText: 'minutos', labelStyle: TextStyle(fontSize: 10)),
-      keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-    );
-  }
-}
-
-class CellCheckBox extends StatefulWidget {
-  @override
-  _CellCheckBoxState createState() => _CellCheckBoxState();
-
-  CellCheckBox({required this.idAlumno});
-
-  final int idAlumno;
-}
-
-class _CellCheckBoxState extends State<CellCheckBox> {
-  bool _isChecked = false;
-  @override
-  Widget build(BuildContext context) {
-    final provider = Provider.of<PreceptorProvider>(context);
-    return Checkbox(
-      activeColor: Colors.purple,
-      onChanged: (bool? value) {
-        setState(() {
-          _isChecked = value!;
-          if (_isChecked) {
-            provider.changeEnableMinsTardanza(true);
-            provider.addAsistenciaFromAlumno('presente', widget.idAlumno);
-          } else {
-            provider.addAsistenciaFromAlumno('ausente', widget.idAlumno);
-          }
-        });
-      },
-      value: _isChecked,
-    );
+    return DropdownButton(
+        value: _listValue,
+        onChanged: (String? newVal) => setState(() {
+              _listValue = newVal!;
+            }),
+        items: [
+          for (String e in estados)
+            DropdownMenuItem<String>(
+                value: e,
+                child: Text(
+                  e,
+                  style: e == 'A'
+                      ? TextStyle(color: Colors.red.shade800)
+                      : TextStyle(color: Colors.black),
+                ))
+        ]);
   }
 }
