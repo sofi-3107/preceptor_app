@@ -32,7 +32,7 @@ class _ListaCursoState extends State<ListaCurso> {
                     return ListTile(
                         title:
                             Text('${alumnos[i].apellido} ${alumnos[i].nombre}'),
-                        trailing: DropDownPresente());
+                        trailing: DropDownPresente(idAlumno: alumnos[i].id!));
                   },
                   separatorBuilder: (context, i) => Divider(
                         thickness: 2,
@@ -51,15 +51,20 @@ class _ListaCursoState extends State<ListaCurso> {
 }
 
 class DropDownPresente extends StatefulWidget {
+  DropDownPresente({required this.idAlumno});
   @override
   State<DropDownPresente> createState() => _DropDownPresenteState();
+
+  int idAlumno;
 }
 
 class _DropDownPresenteState extends State<DropDownPresente> {
   List estados = ['A', 'P', 'T'];
   String _listValue = 'A';
+
   @override
   Widget build(BuildContext context) {
+    final providerAlumnos = Provider.of<PreceptorProvider>(context);
     return DropdownButton(
         value: _listValue,
         onChanged: (String? newVal) => setState(() {
@@ -68,13 +73,18 @@ class _DropDownPresenteState extends State<DropDownPresente> {
         items: [
           for (String e in estados)
             DropdownMenuItem<String>(
-                value: e,
-                child: Text(
-                  e,
-                  style: e == 'A'
-                      ? TextStyle(color: Colors.red.shade800)
-                      : TextStyle(color: Colors.black),
-                ))
+              value: e,
+              child: Text(
+                e,
+                style: e == 'A'
+                    ? TextStyle(color: Colors.red.shade800)
+                    : TextStyle(color: Colors.black),
+              ),
+              onTap: () {
+                providerAlumnos.addAsistenciaFromAlumno(
+                    _listValue, widget.idAlumno);
+              },
+            )
         ]);
   }
 }

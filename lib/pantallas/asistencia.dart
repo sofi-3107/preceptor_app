@@ -9,12 +9,6 @@ import 'package:preceptor_app/styles/estilos.dart';
 import 'package:provider/provider.dart';
 
 class Asistencia extends StatelessWidget {
-  /* Asistencia({
-    Key? key,
-    required this.curso
-  }) : super(key: key);*/
-  //final Curso curso;
-
   HttpService ss = HttpService();
   @override
   Widget build(BuildContext context) {
@@ -25,7 +19,7 @@ class Asistencia extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppbar(
           title:
-              '${curso.nivel!.nivel}º ${curso.division}º C${curso.nivel!.ciclo![0]} T${curso.turno![0]}'),
+              '${curso.nivel!.nivel}º ${curso.division}º C${curso.nivel!.ciclo![0]} T${curso.turno![0]} \n ${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}'),
       drawer: DrawerMenu(),
       body: Column(children: [
         SingleChildScrollView(
@@ -51,7 +45,9 @@ class Asistencia extends StatelessWidget {
                   child: Text('Modificar')),
               Expanded(child: SizedBox()),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  provider.guardarAsistencias();
+                },
                 child: Text('Guardar'),
                 style: buttonStyle,
               ),
