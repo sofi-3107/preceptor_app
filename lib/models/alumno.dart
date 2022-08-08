@@ -5,8 +5,9 @@ import 'package:preceptor_app/models/tutor.dart';
 import 'asistencia.dart';
 
 class Alumno {
-  Alumno({this.apellido, this.nombre, this.tutor, this.asistencias});
+  Alumno({this.apellido, this.nombre, this.tutor, this.asistencias, this.id});
 
+  final int? id;
   final String? apellido;
   final String? nombre;
   final Tutor? tutor;
@@ -17,6 +18,7 @@ class Alumno {
   String toRawJson() => json.encode(toJson());
 
   factory Alumno.fromJson(Map<String, dynamic> json) => Alumno(
+      id: json["id"] ?? 0,
       apellido: json["apellido"] ?? '',
       nombre: json["nombre"] ?? '',
       tutor: Tutor.fromJson(

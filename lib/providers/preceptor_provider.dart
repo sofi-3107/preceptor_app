@@ -19,6 +19,27 @@ class PreceptorProvider extends ChangeNotifier {
   String messageSMS = '';
   List<Asistencia> asistencias = [];
   List<CondicionMateria> aprobadosDesaprobados = [];
+  int minsTardanza = 0;
+  bool enableMinsTardanza = false;
+  int idAlumnoAsistencia = 0;
+
+  getIdAlumnoAsistencia() => idAlumnoAsistencia;
+
+  setIdAlumnoAsistencia(int id) {
+    idAlumnoAsistencia = id;
+    notifyListeners();
+  }
+
+  changeEnableMinsTardanza(bool value) {
+    enableMinsTardanza = value;
+    notifyListeners();
+  }
+
+  getMinsTardanza() => minsTardanza;
+  setMinsTardanza(int mins) {
+    minsTardanza = mins;
+    notifyListeners();
+  }
 
 //Getter y Setter para compartir el id del curso entre componentes
   getSelectedCurso() => selectedCurso;
@@ -98,19 +119,19 @@ class PreceptorProvider extends ChangeNotifier {
     return aprobadosDesaprobados;
   }
 
-  addAsistenciaFromAlumno(String condicion, int idAlumno, int? mins) {
-    asistencias.clear();
+  addAsistenciaFromAlumno(String condicion, int idAlumno) {
     asistencias.add(Asistencia(
         cicloLectivo: currentyear,
         estado: condicion,
         fecha: DateTime.now().toString(),
         alumno: idAlumno,
-        tardanza: mins));
+        tardanza: getMinsTardanza()));
   }
 
   guardarAsistencias(List<Asistencia> asistencias) async {
     for (var a in asistencias) {
       await service.guardarAsistencia(a);
     }
+    asistencias.clear();
   }
 }

@@ -19,12 +19,7 @@ class _ListaCursoState extends State<ListaCurso> {
   Widget build(BuildContext context) {
     // print('id del curso en lista alumnos: ${widget.idCurso}');
     final providerAlumnos = Provider.of<PreceptorProvider>(context);
-    var cellTextField = DataCell(TextField(
-      decoration: InputDecoration(
-          labelText: 'minutos', labelStyle: TextStyle(fontSize: 10)),
-      keyboardType: TextInputType.number,
-      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-    ));
+
     return FutureBuilder(
         future: providerAlumnos
             .getAlumnosCursoOfProvider(widget.idCurso)
@@ -38,10 +33,10 @@ class _ListaCursoState extends State<ListaCurso> {
                 DataColumn(label: Text('Tardanza'))
               ],
               rows: alumnos
-                  .map<DataRow>((a) => DataRow(cells: [
+                  .map<DataRow>((Alumno a) => DataRow(cells: [
                         DataCell(Text('${a.apellido!}  ${a.nombre!}')),
-                        DataCell(CellCheckBox()),
-                        cellTextField
+                        DataCell(CellCheckBox(idAlumno: a.id!)),
+                        DataCell(MinsTextField())
                       ]))
                   .toList(),
             );
@@ -56,20 +51,51 @@ class _ListaCursoState extends State<ListaCurso> {
   }
 }
 
+class MinsTextField extends StatefulWidget {
+  MinsTextField(bool isEnabled);
+
+  @override
+  State<MinsTextField> createState() => _MinsTextFieldState();
+}
+
+class _MinsTextFieldState extends State<MinsTextField> {
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      enabled: widget.isEnabled,
+      decoration: InputDecoration(
+          labelText: 'minutos', labelStyle: TextStyle(fontSize: 10)),
+      keyboardType: TextInputType.number,
+      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+    );
+  }
+}
+
 class CellCheckBox extends StatefulWidget {
   @override
   _CellCheckBoxState createState() => _CellCheckBoxState();
+
+  CellCheckBox({required this.idAlumno});
+
+  final int idAlumno;
 }
 
 class _CellCheckBoxState extends State<CellCheckBox> {
   bool _isChecked = false;
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PreceptorProvider>(context);
     return Checkbox(
       activeColor: Colors.purple,
       onChanged: (bool? value) {
         setState(() {
           _isChecked = value!;
+          if (_isChecked) {
+            provider.changeEnableMinsTardanza(true);
+            provider.addAsistenciaFromAlumno('presente', widget.idAlumno);
+          } else {
+            provider.addAsistenciaFromAlumno('ausente', widget.idAlumno);
+          }
         });
       },
       value: _isChecked,
