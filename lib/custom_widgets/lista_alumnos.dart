@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:preceptor_app/models/alumno.dart';
 import 'package:preceptor_app/providers/preceptor_provider.dart';
-import 'package:preceptor_app/styles/estilos.dart';
 import 'package:provider/provider.dart';
 
 class ListaCurso extends StatefulWidget {
@@ -17,7 +16,6 @@ class _ListaCursoState extends State<ListaCurso> {
 
   @override
   Widget build(BuildContext context) {
-    // print('id del curso en lista alumnos: ${widget.idCurso}');
     final providerAlumnos = Provider.of<PreceptorProvider>(context);
 
     return FutureBuilder(
@@ -26,19 +24,19 @@ class _ListaCursoState extends State<ListaCurso> {
             .then((value) => alumnos = value),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return Expanded(
-              child: ListView.separated(
-                  itemBuilder: (context, i) {
-                    return ListTile(
-                        title:
-                            Text('${alumnos[i].apellido} ${alumnos[i].nombre}'),
-                        trailing: DropDownPresente(idAlumno: alumnos[i].id!));
-                  },
-                  separatorBuilder: (context, i) => Divider(
-                        thickness: 2,
-                      ),
-                  itemCount: alumnos.length),
-            );
+            return ListView.separated(
+                itemBuilder: (context, i) {
+                  return ListTile(
+                      title:
+                          Text('${alumnos[i].apellido} ${alumnos[i].nombre} '),
+                      trailing: DropDownPresente(
+                        idAlumno: alumnos[i].id!,
+                      ));
+                },
+                separatorBuilder: (context, i) => Divider(
+                      thickness: 2,
+                    ),
+                itemCount: alumnos.length);
           } else if (snapshot.hasError) {
             return Center(
               child: Text(" Ha ocurrido un error:\n ${snapshot.error}"),
@@ -59,16 +57,19 @@ class DropDownPresente extends StatefulWidget {
 }
 
 class _DropDownPresenteState extends State<DropDownPresente> {
-  List estados = ['A', 'P', 'T'];
-  String _listValue = 'A';
+  List estados = ['ausente', 'presente', 'tarde'];
+  String _listValue = 'ausente';
 
   @override
   Widget build(BuildContext context) {
     final providerAlumnos = Provider.of<PreceptorProvider>(context);
+
     return DropdownButton(
         value: _listValue,
         onChanged: (String? newVal) => setState(() {
               _listValue = newVal!;
+              providerAlumnos.addAsistenciaFromAlumno(
+                  _listValue, widget.idAlumno);
             }),
         items: [
           for (String e in estados)
@@ -80,10 +81,6 @@ class _DropDownPresenteState extends State<DropDownPresente> {
                     ? TextStyle(color: Colors.red.shade800)
                     : TextStyle(color: Colors.black),
               ),
-              onTap: () {
-                providerAlumnos.addAsistenciaFromAlumno(
-                    _listValue, widget.idAlumno);
-              },
             )
         ]);
   }

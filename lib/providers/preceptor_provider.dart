@@ -19,6 +19,13 @@ class PreceptorProvider extends ChangeNotifier {
   String messageSMS = '';
   List<Asistencia> asistencias = [];
   List<CondicionMateria> aprobadosDesaprobados = [];
+  /* String selectedEstadoAsistencia = 'ausente';
+
+  getSelectedEstadoAsistencia() => selectedEstadoAsistencia;
+  setSelectedEstadoAsistencia(String estado) {
+    selectedEstadoAsistencia = estado;
+    notifyListeners();
+  }*/
 
 //Getter y Setter para compartir el id del curso entre componentes
   getSelectedCurso() => selectedCurso;
@@ -98,17 +105,17 @@ class PreceptorProvider extends ChangeNotifier {
     return aprobadosDesaprobados;
   }
 
-  addAsistenciaFromAlumno(String condicion, int idAlumno) {
+  addAsistenciaFromAlumno(String estado, int idAlumno) {
     DateTime hoy = DateTime.now();
     asistencias.add(Asistencia(
       cicloLectivo: currentyear,
-      estado: condicion,
+      estado: estado,
       fecha: '${hoy.day}/${hoy.month}/${hoy.year}',
       alumno: idAlumno,
     ));
   }
 
-  guardarAsistencias() async {
+  Future<void> guardarAsistencias() async {
     for (var a in asistencias) {
       await service.guardarAsistencia(a);
     }

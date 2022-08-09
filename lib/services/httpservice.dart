@@ -80,7 +80,6 @@ class HttpService {
   }
 
   guardarAsistencia(Asistencia asistencia) async {
-    print('URL asistencia: $rootUrl/$asistenciaUrl');
     try {
       final response = await http.post(Uri.parse('$rootUrl/$asistenciaUrl'),
           headers: <String, String>{

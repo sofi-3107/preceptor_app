@@ -8,7 +8,6 @@ class Asistencia {
   Asistencia({this.cicloLectivo, this.estado, this.fecha, this.alumno});
 
   final String? fecha;
-
   final int? cicloLectivo;
   final String? estado;
   final int? alumno;
