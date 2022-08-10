@@ -65,7 +65,8 @@ class PreceptorProvider extends ChangeNotifier {
   ) async {
     alumnosCurso.clear();
     await service
-        .getAlumnosCurso(curso, currentyear)
+        .getAlumnosCurso(curso, currentyear, DateTime.now().day,
+            DateTime.now().month, DateTime.now().year)
         .then((value) => alumnosCurso = value);
 
     return alumnosCurso;

@@ -30,13 +30,15 @@ class HttpService {
   }
 
 /**Obtiene la lista de alumnos de un curso en particular */
-  Future<List<Alumno>> getAlumnosCurso(int curso, int cicloLectivo) async {
+  Future<List<Alumno>> getAlumnosCurso(
+      int curso, int cicloLectivo, int dia, int mes, int anio) async {
     List<Alumno> alumnosCurso = [];
     try {
-      final response = await http
-          .get(Uri.parse('$rootUrl/$alumnosCursoUrl/$curso/$cicloLectivo'));
+      final response = await http.get(Uri.parse(
+          '$rootUrl/$alumnosCursoUrl/$curso/$cicloLectivo/$dia/$mes/$anio'));
       if (response.statusCode == 200) {
         final decodedResponse = await json.decode(response.body);
+        print('alumnos del curso $curso: $decodedResponse');
         for (var i = 0; i < decodedResponse.length; i++) {
           alumnosCurso.add(Alumno.fromJson(decodedResponse[i]));
         }

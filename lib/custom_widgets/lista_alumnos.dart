@@ -26,10 +26,14 @@ class _ListaCursoState extends State<ListaCurso> {
           if (snapshot.hasData) {
             return ListView.separated(
                 itemBuilder: (context, i) {
+                  print(alumnos[i].asistencias!.isEmpty);
                   return ListTile(
                       title:
                           Text('${alumnos[i].apellido} ${alumnos[i].nombre} '),
                       trailing: DropDownPresente(
+                        asistenciaEstado: alumnos[i].asistencias!.isEmpty
+                            ? '-'
+                            : alumnos[i].asistencias![0].estado!,
                         idAlumno: alumnos[i].id!,
                       ));
                 },
@@ -49,16 +53,22 @@ class _ListaCursoState extends State<ListaCurso> {
 }
 
 class DropDownPresente extends StatefulWidget {
-  DropDownPresente({required this.idAlumno});
+  DropDownPresente({required this.idAlumno, required this.asistenciaEstado});
   @override
   State<DropDownPresente> createState() => _DropDownPresenteState();
-
+  String asistenciaEstado;
   int idAlumno;
 }
 
 class _DropDownPresenteState extends State<DropDownPresente> {
-  List estados = ['ausente', 'presente', 'tarde'];
-  String _listValue = 'ausente';
+  List estados = ['-', 'ausente', 'presente', 'tarde'];
+  late String _listValue;
+
+  @override
+  void initState() {
+    _listValue = widget.asistenciaEstado;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
