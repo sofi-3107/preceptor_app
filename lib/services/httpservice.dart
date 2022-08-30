@@ -94,4 +94,14 @@ class HttpService {
       print('Error en el servicio metodo GuardarAsistencia: $e');
     }
   }
+
+  /**Voy a usar el modelo de Alumno porque tiene el nombre y apellido, para no crear un modelo Persona o Preceptor */
+  Future<Alumno> obtenerNombre(int id) async {
+    final response = await http.get(Uri.parse('$rootUrl/nombre/$id'));
+    final decodedResponse = await json.decode(response.body);
+    Alumno preceptor = Alumno(
+        apellido: decodedResponse["apellido"],
+        nombre: decodedResponse["nombre"]);
+    return preceptor;
+  }
 }

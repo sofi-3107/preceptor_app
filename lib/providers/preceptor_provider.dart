@@ -122,4 +122,9 @@ class PreceptorProvider extends ChangeNotifier {
     }
     asistencias.clear();
   }
+
+  Future<String> obtenerNombrePreceptor(int id) async {
+    Alumno preceptor = await service.obtenerNombre(id);
+    return '${preceptor.nombre} ${preceptor.apellido}';
+  }
 }

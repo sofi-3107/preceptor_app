@@ -46,7 +46,7 @@ class _GraficoMateriasState extends State<GraficoMaterias> {
     final provider = Provider.of<GraficoProvider>(context);
     final providerCurso = Provider.of<PreceptorProvider>(context);
     return Scaffold(
-        appBar: const CustomAppbar(title: 'Grafico de Materias'),
+        appBar: CustomAppbar(title: 'Grafico de Materias'),
         drawer: DrawerMenu(),
         body: FutureBuilder(
             future: provider
