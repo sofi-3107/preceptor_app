@@ -10,8 +10,15 @@ import 'package:provider/provider.dart';
 
 class Asistencia extends StatelessWidget {
   HttpService ss = HttpService();
+
   @override
   Widget build(BuildContext context) {
+    const snackBar = SnackBar(
+        backgroundColor: Colors.green,
+        content: Text(
+          'Asistencia guardada correctamente',
+          style: TextStyle(color: Colors.white),
+        ));
     final provider = Provider.of<PreceptorProvider>(context);
     Curso curso = provider.getSelectedCurso();
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -48,6 +55,7 @@ class Asistencia extends StatelessWidget {
                 onPressed: () {
                   print('Asistencias lista: ${provider.asistencias}');
                   provider.guardarAsistencias();
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 },
                 child: Text('Guardar'),
                 style: buttonStyle,
