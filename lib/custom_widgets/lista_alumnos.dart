@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart'; // for date format
 import 'package:flutter/services.dart';
 import 'package:preceptor_app/models/alumno.dart';
 import 'package:preceptor_app/providers/preceptor_provider.dart';
@@ -17,7 +18,8 @@ class _ListaCursoState extends State<ListaCurso> {
   @override
   Widget build(BuildContext context) {
     final providerAlumnos = Provider.of<PreceptorProvider>(context);
-
+    DateFormat df = DateFormat("dd/MM/yyyy");
+    String fechaActual = df.format(DateTime.now());
     return FutureBuilder(
         future: providerAlumnos
             .getAlumnosCursoOfProvider(widget.idCurso)
@@ -26,7 +28,13 @@ class _ListaCursoState extends State<ListaCurso> {
           if (snapshot.hasData) {
             return ListView.separated(
                 itemBuilder: (context, i) {
-                  print(alumnos[i].asistencias!.isEmpty);
+                  List<Alumno> ultimasAsistencias = alumnos
+                      .where((a) =>
+                          a.asistencias!.isEmpty ||
+                          a.asistencias![a.asistencias!.length - 1].fecha!
+                                  .compareTo(fechaActual) ==
+                              0)
+                      .toList();
                   return ListTile(
                       title:
                           Text('${alumnos[i].apellido} ${alumnos[i].nombre} '),
@@ -87,7 +95,7 @@ class _DropDownPresenteState extends State<DropDownPresente> {
               value: e,
               child: Text(
                 e,
-                style: e == 'A'
+                style: e == 'ausente'
                     ? TextStyle(color: Colors.red.shade800)
                     : TextStyle(color: Colors.black),
               ),

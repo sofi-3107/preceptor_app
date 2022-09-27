@@ -19,6 +19,7 @@ class PreceptorProvider extends ChangeNotifier {
   String messageSMS = '';
   List<Asistencia> asistencias = [];
   List<CondicionMateria> aprobadosDesaprobados = [];
+  
   /* String selectedEstadoAsistencia = 'ausente';
 
   getSelectedEstadoAsistencia() => selectedEstadoAsistencia;
