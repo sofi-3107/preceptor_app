@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:preceptor_app/custom_widgets/message_box.dart';
 import 'package:preceptor_app/models/alumno.dart';
 import 'package:preceptor_app/providers/preceptor_provider.dart';
@@ -37,9 +38,11 @@ class ListScroll extends StatelessWidget {
                             .length >=
                         provider.getCantidadFaltas())
                       ListTile(
-                        leading: Icon(Icons.contact_phone_sharp,
-                            color: Colors.blue.shade900),
-                        onTap: () => enviarSMS(
+                        leading: FaIcon(
+                          FontAwesomeIcons.whatsapp,
+                          color: Colors.green.shade700,
+                        ),
+                        onTap: () => enviarWhatsap(
                             provider.getMessageSMS(), [a.tutor!.telefono!]),
                         title: Text(
                             '${a.apellido!} ${a.nombre!}   Faltas: ${a.asistencias!.where((a) => a.estado == 'ausente').length}   Tutor: ${a.tutor!.telefono}'),
